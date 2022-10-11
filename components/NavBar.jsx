@@ -1,9 +1,14 @@
-import React from 'react'
-
+import Link from "next/link"
 const NavBar = () => {
   return (
-    <div>
-        <h1 className='bg-red-50 font-Mochiy mx-6 md:max-w-2xl md:mx-auto'>NavBar</h1></div>
+    <div className='flex justify-between'>
+      <Link href={'/'}>
+<div className="font-Mochiy text-lg bg-cyan-300 p-2 rounded-md m-2 cursor-pointer">Home</div>
+      </Link>
+      <Link href={'/auth/login'}>
+<div className='bg-cyan-300 rounded-lg p-4 m-4 '><button>Sign IN</button> </div>
+      </Link>
+</div>
   )
 }
 
