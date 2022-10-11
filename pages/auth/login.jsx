@@ -1,22 +1,23 @@
 import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../utils/firebase";
+import { useRouter } from "next/router";
 import {FcGoogle} from 'react-icons/fc'
 
 
 
 const login = () => {
     const provider = new GoogleAuthProvider();
-
+const router = useRouter()
 
 
     const signInWithGooglePopup = () => {
 signInWithPopup(auth, provider)
 .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    
+    const token = credential.accessToken;    
     const user = result.user;
     console.log(user)
+    router.push('/')
   }).catch((error) => {
     console.log(error.message)
   });
