@@ -1,6 +1,8 @@
 import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useEffect } from "react";
 import { auth } from "../../utils/firebase";
 import { useRouter } from "next/router";
+import {useAuthState} from 'react-firebase-hooks/auth'
 import {FcGoogle} from 'react-icons/fc'
 
 
@@ -8,6 +10,7 @@ import {FcGoogle} from 'react-icons/fc'
 const login = () => {
     const provider = new GoogleAuthProvider();
 const router = useRouter()
+const [user, loader] = useAuthState(auth)
 
 
     const signInWithGooglePopup = () => {
@@ -23,6 +26,15 @@ signInWithPopup(auth, provider)
   });
 
     }
+
+    useEffect(()=>{
+if(user) {
+  router.push('/')
+}else{
+  console.log('Login Please')
+}
+    },[user])
+
   return (
     <div className='shadow-xl p-16 mt-12 text-gray-800 ' >
         <h1 className='text-2xl font-medium'>Join Now</h1>
