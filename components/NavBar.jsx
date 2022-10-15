@@ -8,7 +8,7 @@ const NavBar = () => {
   return (
     <div className="flex justify-between">
       <Link href={"/"}>
-        <button className="font-Mochiy text-lg bg-cyan-300 p-2 rounded-md m-2 cursor-pointer">
+        <button className="font-Mochiy text-lg p-2 rounded-md m-2 cursor-pointer">
           Home
         </button>
       </Link>
