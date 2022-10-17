@@ -4,6 +4,7 @@ import {  addDoc,serverTimestamp } from "firebase/firestore";
 import {useAuthState} from 'react-firebase-hooks/auth'
 import { useState } from 'react';
 import  { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const post = () => {
     const [user , loader ] = useAuthState(auth)
@@ -12,6 +13,17 @@ const post = () => {
     
     const SubmitPost = async(e) =>{
 e.preventDefault()
+
+//if empty 
+if(!post.description) {
+  toast.error('Please write a description')
+  return;
+}
+if(post.description.length>300){
+  toast.error('Text Limit exceeded')
+  return;
+}
+
 const docRef = await addDoc(postsRef, {
    ...post,
    timestamp: serverTimestamp(),
