@@ -1,18 +1,16 @@
 
-const PostBody = ({children}) => {
+const PostBody = ({children,avatar , username , description}) => {
   return (
-    <div>
-    <div>
-        <img src='' />
-        <h2>UserName</h2>
+    <div className="bg-white p-8 border-b-2 rounded-lg">
+    <div className="flex items-center gap-2">
+      <img src={avatar} className="w-10 rounded-full" />
+      <h2>{username}</h2>
     </div>
-    <div>
-
-    <p>Description</p>
+    <div className="py-4">
+      <p>{description}</p>
     </div>
-{children}
-
-    </div>
+    {children}
+  </div>
   )
 }
 
