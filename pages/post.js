@@ -54,4 +54,4 @@ return route.push('/')
   )
 }
 
-export default post
+export default post;

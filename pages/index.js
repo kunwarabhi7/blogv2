@@ -1,6 +1,31 @@
 import Head from 'next/head'
+import PostBody from '../components/PostBody'
+import { useState,useEffect } from 'react'
+import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
+import {db, postsRef} from '../utils/firebase'
 
 export default function Home() {
+const [allData , setAllData]  = useState([])
+
+  const getAllPost =async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    const q = query(postsRef, orderBy('timestamp','desc'))
+
+    const unsubsribe = onSnapshot(q, (snapshot)=>{
+      setAllData(snapshot.docs.map((doc)=> ({...doc.data() , id: doc.id})));
+    })
+
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  setAllData(doc.id, " => ", doc.data());
+});
+return unsubsribe;
+  }
+
+  useEffect(()=>{
+    getAllPost()
+  },[])
+
   return (
     <div>
       <Head>
@@ -9,10 +34,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        
-      </main>
-
-       </div>
+      <div className="my-12 text-lg font-medium">
+        <h2>See what other people are saying</h2>
+        {allData.map((post) => (
+          <PostBody key={post.id} {...post}>
+         
+                   </PostBody>
+        ))}
+      </div>
+    </div>
   )
 }
