@@ -1,5 +1,5 @@
 
-const PostBody = ({children,avatar , username , description}) => {
+const PostBody = ({children , avatar , username , description}) => {
   return (
     <div className="bg-white p-8 border-b-2 rounded-lg">
     <div className="flex items-center gap-2">
