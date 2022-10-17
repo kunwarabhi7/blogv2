@@ -16,10 +16,9 @@ const docRef = await addDoc(postsRef, {
    timestamp: serverTimestamp(),
    user:user.uid,
    avatar:user.photoURL
-   ,   username: user.displayName
-    
+   ,   username: user.displayName  
   });
-  console.log("Document written with ID: ", docRef.id);
+setPost({...post ,description:''})
     }
 
   return (
