@@ -3,11 +3,12 @@ import {  addDoc,serverTimestamp } from "firebase/firestore";
 
 import {useAuthState} from 'react-firebase-hooks/auth'
 import { useState } from 'react';
+import  { useRouter } from 'next/router';
 
 const post = () => {
     const [user , loader ] = useAuthState(auth)
     const [post, setPost] = useState({ description: "" });
-    
+    const route = useRouter()
     
     const SubmitPost = async(e) =>{
 e.preventDefault()
@@ -19,6 +20,7 @@ const docRef = await addDoc(postsRef, {
    ,   username: user.displayName  
   });
 setPost({...post ,description:''})
+return route.push('/')
     }
 
   return (
