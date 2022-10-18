@@ -5,31 +5,33 @@ import { useRouter } from 'next/router';
 import { useEffect,useState } from 'react';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PostBody from '../components/PostBody';
+import Link from 'next/link';
 
 const dashboard = () => {
-    const router = useRouter()
+    const route = useRouter()
     const [user , loader] = useAuthState(auth)
     const [posts, setPosts] = useState([]);
 
     const SignOutUser = () => {
         signOut(auth).then(() => {
-            router.push('/auth/login')
+            route.push('/auth/login')
 
           }).catch((error) => {
             console.log(error.message);
           });
     }
-const getData = () =>{
 
-    if(loader) return ;
-    if(!user) return router.push('/auth/login')
-    const collectionRef = collection(db,'posts')
-    const q = query(collectionRef,where('user','==','user.uid'));
-    const unsubsribe = onSnapshot(q,(snapshot)=>{
-      setPosts(snapshot.docs.map((doc)=>({...doc.data(), id: doc.id})));
-    })
-    return unsubsribe;
-}
+  const getData = async () => {
+    if (loader) return;
+    if (!user) return route.push("/auth/login");
+
+    const collectionRef = collection(db, "posts");
+    const q = query(collectionRef, where("user", "==", user.uid));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+    return unsubscribe;
+  };
 
 useEffect(()=>{
     getData();
@@ -37,17 +39,35 @@ useEffect(()=>{
 
   return (
     <div>
-        <h1>Your Posts</h1>
-        <div>
-          {posts.map((post)=>(
-   <PostBody {...post} key={post.id} >
-  <button>Delete</button>
-  <button>Edit</button>
-   </PostBody> 
-))}
-        </div>
-        <button onClick={SignOutUser}>Sign Out</button>
-
+      <h1>Your posts</h1>
+      <div>
+        {posts.map((post) => {
+          return (
+            <PostBody {...post} key={post.id}>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => deletePost(post.id)}
+                  className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm"
+                >
+                   Delete
+                </button>
+                <Link href={{ pathname: "/post", query: post }}>
+                  <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
+                   
+                    Edit
+                  </button>
+                </Link>
+              </div>
+            </PostBody>
+          );
+        })}
+      </div>
+      <button
+        className="font-medium text-white bg-gray-800 py-2 px-4 my-6"
+        onClick={SignOutUser}
+      >
+        Sign out
+      </button>
     </div>
   )
 }
