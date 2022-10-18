@@ -3,8 +3,10 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { signOut } from "firebase/auth";
 import { useRouter } from 'next/router';
 import { useEffect,useState } from 'react';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore';
 import PostBody from '../components/PostBody';
+import {AiFillDelete} from 'react-icons/ai'
+import {BiEdit} from 'react-icons/bi'
 import Link from 'next/link';
 
 const dashboard = () => {
@@ -33,6 +35,14 @@ const dashboard = () => {
     return unsubscribe;
   };
 
+  //Delete Post 
+
+  const deletePost = (id) => {
+    const docRef = doc(db,'posts', id);
+    deleteDoc(docRef);
+
+  }
+
 useEffect(()=>{
     getData();
 },[user,loader])
@@ -48,12 +58,12 @@ useEffect(()=>{
                 <button
                   onClick={() => deletePost(post.id)}
                   className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm"
-                >
+                ><AiFillDelete />
                    Delete
                 </button>
                 <Link href={{ pathname: "/post", query: post }}>
                   <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
-                   
+                   <BiEdit />
                     Edit
                   </button>
                 </Link>
